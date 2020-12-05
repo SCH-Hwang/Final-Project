@@ -3,6 +3,7 @@
 import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import LaserScan
+import math
 
 class SelfDrive:
     def __init__(self, publisher):
@@ -15,9 +16,15 @@ class SelfDrive:
         turtle_vel = Twist()
         turtle_vel.linear.x = 0.2
         turtle_vel.angular.z = 0.0
-        if scan.ranges[0] < 0.2
+        if scan.ranges[30] < (0.18 * 2/math.sqrt(3)) or scan.ranges[0] < 0.18:
+            print("for left turn")
+            if scan.ranges[0] > 0.18:
+                turtle_vel.linear.x = 0.18
+                turtle_vel.linear.z = 0.0
             turtle_vel.linear.x = 0.0
-            turtle_vel.angular.z = 2.0
+            turtle_vel.angular.z = -1.0
+            
+        self.publisher.publish(turtle_vel)
 
 
 def main():
